@@ -53,7 +53,7 @@ char *GetXMLReply(char *botid, char *custid, char *inputData) {
     requestURL = malloc((96 + strlen(inputData) + 1) * sizeof (char));
     if (requestURL == NULL) {
         printf("Fatal Error: Memory allocation failed! [#004]\n");
-        sleep(2);
+        usleep(2000);
         exit(5);
     }
     strcpy(requestURL, "http://pandorabots.com/pandora/talk-xml");
@@ -133,26 +133,16 @@ char *FormatXMLReply(char *xml, char returnType) {
         endAddress = startAddress + sizeNeeded;
     }
 
-
+    int n = 0;
     while (1) {
-        int n = 0;
         if (startAddress == endAddress) {
-            //buffer[n] = '\0';
+            buffer[n] = '\0';
             break;
         }
-
         buffer[n] = *startAddress;
-
-        printf("A: %c\n", *startAddress );
-        printf("%d\n", strlen(buffer) );
-
         n++;
         startAddress++;
     }
-
-
-
-
     free(xml);
     return buffer;
 }
@@ -162,7 +152,7 @@ char *GetCustomerID(char *botid) {
     char *result = malloc((16 + 1) * sizeof (char));
     if (result == NULL) {
         printf("Fatal Error: Memory allocation failed! [#005]\n");
-        sleep(2);
+        usleep(2000);
         exit(6);
     }
     FILE *fhandle;
@@ -194,7 +184,7 @@ static size_t WriteFunction(void *contents, size_t size, size_t tempber, void *p
     temp->data = realloc(temp->data, temp->size + realSize + 1);
     if (temp->data == NULL) {
         printf("Fatal Error: Memory allocation failed! [#003]\n");
-        sleep(2);
+        usleep(2000);
         exit(4);
     }
     memcpy(&(temp->data[temp->size]), contents, realSize);
