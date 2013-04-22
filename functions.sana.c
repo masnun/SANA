@@ -82,60 +82,79 @@ char *GetXMLReply(char *botid, char *custid, char *inputData) {
 
 /* *** Function to format the XML output to get the results *** */
 char *FormatXMLReply(char *xml, char returnType) {
-    char startC[12], endC[8], *startP, *endP;
+    char startString[12], endString[8], *startAddress, *endAddress;
+
     if (!strlen(xml)) {
         printf("System Error: XML input is NULL. Is the network offline?\n");
         usleep(2000);
         exit(2);
     }
+
     int sizeNeeded = 0;
     switch (returnType) {
         case 'a':
-            strcpy(startC, "<that>");
-            strcpy(endC, "</that>");
+            strcpy(startString, "<that>");
+            strcpy(endString, "</that>");
             sizeNeeded = 512;
             break;
         case 'b':
-            strcpy(startC, "botid=\"");
+            strcpy(startString, "botid=\"");
             sizeNeeded = 16;
             break;
         case 'c':
-            strcpy(startC, "custid=\"");
+            strcpy(startString, "custid=\"");
             sizeNeeded = 16;
             break;
         default:
-            strcpy(startC, "status=\"");
+            strcpy(startString, "status=\"");
             sizeNeeded = 1;
             break;
     }
-    char *formatted, *temp;
+
     /*
-    temp = (char *) malloc((sizeNeeded + 1) * sizeof (char));
-    if (temp == NULL) {
+        printf("%s\n", xml);
+        printf("%s\n",startString );
+        printf("%s\n", endString);
+        printf("%d\n", sizeNeeded);
+    */
+
+    char* buffer;
+    buffer = (char *) malloc((sizeNeeded + 1) * sizeof (char));
+    if (buffer == NULL) {
         printf("Fatal Error: Memory allocation failed! [#002]\n");
-        sleep(2);
+        usleep(2000);
         exit(3);
-    } else {
-        formatted = temp;
     }
-    startP = strstr(xml, startC) + (strlen(startC) * sizeof(char));
+
+    startAddress = strstr(xml, startString) + strlen(startString);
     if (returnType == 'a') {
-        endP = strstr(xml, endC);
+        endAddress = strstr(xml, endString);
     } else {
-        endP = startP + (sizeNeeded * sizeof(char));
+        endAddress = startAddress + sizeNeeded;
     }
+
+
     while (1) {
-        if (startP == endP) {
-            *temp = '\0';
+        int n = 0;
+        if (startAddress == endAddress) {
+            //buffer[n] = '\0';
             break;
         }
-        *temp = *startP;
-        startP++;
-        temp++;
-    } */
+
+        buffer[n] = *startAddress;
+
+        printf("A: %c\n", *startAddress );
+        printf("%d\n", strlen(buffer) );
+
+        n++;
+        startAddress++;
+    }
+
+
+
 
     free(xml);
-    return "xjxkxkxxlxlxlxlxlxlxlx";
+    return buffer;
 }
 
 /* *** Function to manage the individual Customer ID  *** */
