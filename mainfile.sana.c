@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
 
     while (!exitCoin) {
         printf("> ");
-        gets(input);
+        scanf("%s",input);
         if (!strcmp(input, "!about")) {
             puts(": SANA is a chatterbot application");
             puts("  Version 3.3, Released 10 October 2012");
